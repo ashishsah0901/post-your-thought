@@ -1,4 +1,16 @@
 .app {
     background-color: #fafafa;
-    height: 100vh;
+}
+
+.app_signUp {
+    display: flex;
+    flex-direction: column;
+}
+
+.app_signUp > .MuiInput-root {
+    margin: 15px;
+}
+
+.MuiBox-root {
+    width: 70% !important;
 }
