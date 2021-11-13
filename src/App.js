@@ -2,7 +2,6 @@ import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
     signInWithEmailAndPassword,
-    signOut,
     updateProfile,
 } from "@firebase/auth";
 import { collection, onSnapshot, orderBy, query } from "@firebase/firestore";
@@ -12,6 +11,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/header/Header";
 import Post from "./components/post/Post";
+import UploadPost from "./components/uploadPost/UploadPost";
 import { db, auth } from "./firebase";
 
 function App() {
@@ -150,26 +150,22 @@ function App() {
                     </form>
                 </Box>
             </Modal>
-            <Header />
+            <Header user={user} setOpen={setOpen} setOpenLogin={setOpenLogin} />
             {user ? (
-                <Button onClick={() => signOut(auth)}>Logout</Button>
+                <UploadPost user={user} />
             ) : (
-                <div className="app_login">
-                    <Button onClick={() => setOpen(true)}>Sign up</Button>
-                    <Button
-                        onClick={() => {
-                            setOpenLogin(true);
-                            setOpen(true);
-                        }}
-                    >
-                        Sign in
-                    </Button>
-                </div>
+                <h3 className="app_loginToPost">Login to post or comment</h3>
             )}
-
-            {posts.map((post) => (
-                <Post key={post.id} post={post.post} />
-            ))}
+            <div className="app_posts">
+                {posts.map((post) => (
+                    <Post
+                        username={user?.displayName}
+                        postId={post.id}
+                        key={post.id}
+                        post={post.post}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
